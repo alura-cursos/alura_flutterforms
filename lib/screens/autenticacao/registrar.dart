@@ -27,249 +27,201 @@ class Registrar extends StatelessWidget {
         appBar: AppBar(
           title: Text('Cadastro de cliente'),
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
+        body: Consumer<Cliente>(
+          builder: (context, cliente, child) {
+            return Stepper(
+              currentStep: cliente.stepAtual,
+              onStepContinue: () {
+                final functions = [
+                  _salvarStep1,
+                  _salvarStep2,
+                  _salvarStep3,
+                ];
 
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Nome',
-                    ),
-                    controller: _nomeController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-
-                      if(value.contains(" "))
-                        return 'Informe pelo menos um sobrenome!';
-
-                      if(value.length < 3)
-                        return 'Nome inválido!';
-
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                    ),
-                    controller: _emailController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-
-                      if(!value.contains("@") || !value.contains('.'))
-                        return 'Email inválido!';
-
-                      if(value.length < 3)
-                        return 'Email muito curto!';
-
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'CPF',
-                    ),
-                    controller: _cpfController,
-                    maxLength: 14,
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-
-                      if(value.length != 14)
-                        return 'CPF inválido';
-
-                      return null;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CpfInputFormatter()
-                    ],
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Celular',
-                    ),
-                    controller: _celularController,
-                    maxLength: 14,
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-
-                      if(value.length < 11)
-                        return 'Celular inválido';
-
-                      return null;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter()
-                    ],
-                  ),
-
-                  DateTimePicker(
-                    controller: _nascimentoController,
-                    type: DateTimePickerType.date,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    dateLabelText: 'Nascimento',
-                    dateMask: 'dd/MM/yyyy',
-
-                    validator: (value) {
-                      if(value.isEmpty)
-                        return 'Data inválida!';
-
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Cep',
-                    ),
-                    controller: _cepController,
-                    maxLength: 10,
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-
-                      if(value.length < 10)
-                        return 'CEP inválido';
-
-                      return null;
-                    },
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CepInputFormatter()
-                    ],
-                  ),
-
-                  DropdownButtonFormField(
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                      labelText: 'Estado'
-                    ),
-                    items: Estados.listaEstadosSigla.map((String estado) {
-                      return DropdownMenuItem(
-                          child: Text(estado),
-                          value: estado,
-                      );
-                    }).toList(),
-                    onChanged: (String novoEstadoSelecionado) {
-                      _estadoController.text = novoEstadoSelecionado;
-                    },
-
-                    validator: (value) {
-
-                      if(value == null)
-                        return 'Selecione um estado!';
-
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Cidade',
-                    ),
-                    controller: _cidadeController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-
-                      if(value.length < 3)
-                        return 'Cidade inválida';
-
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Bairro',
-                    ),
-                    controller: _bairroController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-
-                      if(value.length < 3)
-                        return 'Bairro inválido';
-
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Logradouro',
-                    ),
-                    controller: _logradouroController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-
-                      if(value.length < 3)
-                        return 'Logradouro inválido';
-
-                      return null;
-                    },
-                  ),
-
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Número',
-                    ),
-                    controller: _numeroController,
-                    maxLength: 255,
-                    keyboardType: TextInputType.text,
-                  ),
-
-                  SizedBox(height: 25),
-                  OutlineButton(
-                    onPressed: () {
-
-                      if(_formKey.currentState.validate()) {
-                        _salvar(context);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Dashboard()
-                          ),
-                          (route) => false,
-                        );
-                      }
-                    },
-                    highlightColor: Color.fromRGBO(71, 161, 56, 0.2),
-                    borderSide: BorderSide(
-                        width: 2,
-                        color: Theme.of(context).accentColor
-                    ),
-                    textColor: Theme.of(context).accentColor,
-                    child: Text(
-                      'Finalizar cadastro >',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                return functions[cliente.stepAtual](context);
+              },
+              onStepCancel: () {
+                cliente.stepAtual > 0 ? cliente.stepAtual -1 : 0;
+              },
+              steps: _construirSteps(context, cliente),
+            );
+          },
         ),
+        // body: SingleChildScrollView(
+        //   child: Form(
+        //     key: _formKey,
+        //     child: Padding(
+        //       padding: EdgeInsets.all(20),
+        //       child: Column(
+        //         children: [
+
+        //
+        //           SizedBox(height: 15),
+        //           TextFormField(
+        //             decoration: InputDecoration(
+        //               labelText: 'Cep',
+        //             ),
+        //             controller: _cepController,
+        //             maxLength: 10,
+        //             keyboardType: TextInputType.number,
+        //             validator: (value) {
+        //
+        //               if(value.length < 10)
+        //                 return 'CEP inválido';
+        //
+        //               return null;
+        //             },
+        //             inputFormatters: [
+        //               FilteringTextInputFormatter.digitsOnly,
+        //               CepInputFormatter()
+        //             ],
+        //           ),
+        //
+        //           DropdownButtonFormField(
+        //             isExpanded: true,
+        //             decoration: InputDecoration(
+        //               labelText: 'Estado'
+        //             ),
+        //             items: Estados.listaEstadosSigla.map((String estado) {
+        //               return DropdownMenuItem(
+        //                   child: Text(estado),
+        //                   value: estado,
+        //               );
+        //             }).toList(),
+        //             onChanged: (String novoEstadoSelecionado) {
+        //               _estadoController.text = novoEstadoSelecionado;
+        //             },
+        //
+        //             validator: (value) {
+        //
+        //               if(value == null)
+        //                 return 'Selecione um estado!';
+        //
+        //               return null;
+        //             },
+        //           ),
+        //
+        //           SizedBox(height: 15),
+        //           TextFormField(
+        //             decoration: InputDecoration(
+        //               labelText: 'Cidade',
+        //             ),
+        //             controller: _cidadeController,
+        //             maxLength: 255,
+        //             keyboardType: TextInputType.text,
+        //             validator: (value) {
+        //
+        //               if(value.length < 3)
+        //                 return 'Cidade inválida';
+        //
+        //               return null;
+        //             },
+        //           ),
+        //
+        //           TextFormField(
+        //             decoration: InputDecoration(
+        //               labelText: 'Bairro',
+        //             ),
+        //             controller: _bairroController,
+        //             maxLength: 255,
+        //             keyboardType: TextInputType.text,
+        //             validator: (value) {
+        //
+        //               if(value.length < 3)
+        //                 return 'Bairro inválido';
+        //
+        //               return null;
+        //             },
+        //           ),
+        //
+        //           TextFormField(
+        //             decoration: InputDecoration(
+        //               labelText: 'Logradouro',
+        //             ),
+        //             controller: _logradouroController,
+        //             maxLength: 255,
+        //             keyboardType: TextInputType.text,
+        //             validator: (value) {
+        //
+        //               if(value.length < 3)
+        //                 return 'Logradouro inválido';
+        //
+        //               return null;
+        //             },
+        //           ),
+        //
+        //           TextFormField(
+        //             decoration: InputDecoration(
+        //               labelText: 'Número',
+        //             ),
+        //             controller: _numeroController,
+        //             maxLength: 255,
+        //             keyboardType: TextInputType.text,
+        //           ),
+        //
+        //           SizedBox(height: 25),
+        //           OutlineButton(
+        //             onPressed: () {
+        //
+        //               if(_formKey.currentState.validate()) {
+        //                 _salvar(context);
+        //                 Navigator.pushAndRemoveUntil(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                       builder: (context) => Dashboard()
+        //                   ),
+        //                   (route) => false,
+        //                 );
+        //               }
+        //             },
+        //             highlightColor: Color.fromRGBO(71, 161, 56, 0.2),
+        //             borderSide: BorderSide(
+        //                 width: 2,
+        //                 color: Theme.of(context).accentColor
+        //             ),
+        //             textColor: Theme.of(context).accentColor,
+        //             child: Text(
+        //               'Finalizar cadastro >',
+        //               style: TextStyle(
+        //                 color: Theme.of(context).accentColor,
+        //                 fontWeight: FontWeight.bold,
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
     );
   }
 
-  void _salvar(context) {
-    Provider.of<Cliente>(context).nome = _nomeController.text;
+  // void _salvar(context) {
+  //   Provider.of<Cliente>(context).nome = _nomeController.text;
+  // }
+
+  _salvarStep1(contex) {
+
+  }
+
+  _salvarStep2(contex) {
+
+  }
+
+  _salvarStep3(contex) {
+
+  }
+
+  _construirSteps(context, cliente) {
+
+  }
+
+  _proximoStep(context) {
+    Cliente cliente = Provider.of<Cliente>(context, listen: false);
+    irPara(cliente.stepAtual + 1, cliente);
+  }
+
+  irPara(int step, cliente) {
+    cliente.stepAtual = step;
   }
 }
