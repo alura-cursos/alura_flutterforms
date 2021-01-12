@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class Cliente extends ChangeNotifier{
@@ -91,6 +93,15 @@ class Cliente extends ChangeNotifier{
 
   //  Tela de cadastro de cliente
   int _stepAtual = 0;
+  File _imagemRG = null;
+
+  File get imagemRG => _imagemRG;
+
+  set imagemRG(File value) {
+    _imagemRG = value;
+
+    notifyListeners();
+  }
 
   int get stepAtual => _stepAtual;
 

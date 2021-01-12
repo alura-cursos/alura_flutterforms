@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flux_validator_dart/flux_validator_dart.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Registrar extends StatelessWidget {
 
@@ -30,6 +31,7 @@ class Registrar extends StatelessWidget {
   final _formUserAuth = GlobalKey<FormState>();
   final TextEditingController _senhaController = TextEditingController();
   final TextEditingController _confirmarSenhaController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -90,19 +92,19 @@ class Registrar extends StatelessWidget {
   }
 
   _salvarStep1(context) {
-    if(_formUserData.currentState.validate()) {
+    // if(_formUserData.currentState.validate()) {
 
-      Cliente cliente = Provider.of<Cliente>(context);
-      cliente.nome = _nomeController.text;
+      // Cliente cliente = Provider.of<Cliente>(context);
+      // cliente.nome = _nomeController.text;
 
       _proximoStep(context);
-    }
+    // }
   }
 
   _salvarStep2(context) {
-    if(_formUserAddress.currentState.validate()) {
+    // if(_formUserAddress.currentState.validate()) {
       _proximoStep(context);
-    }
+    // }
   }
 
   _salvarStep3(context) {
@@ -350,6 +352,24 @@ class Registrar extends StatelessWidget {
                   return null;
                 },
               ),
+
+              SizedBox(height: 15,),
+
+              Text(
+                'Para prosseguir com o seu cadastro é necessário que tenhamos uma foto do seu RG',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+
+              SizedBox(height: 15,),
+
+              RaisedButton(
+                onPressed: () => _capturarRG(cliente),
+                child: Text('Tirar foto do meu RG')
+              ),
+
+              _jaEnviouRG(context) ? _imagemDoRG(context) : _pedidoDeRG(context),
             ],
           ),
         )
@@ -367,4 +387,9 @@ class Registrar extends StatelessWidget {
   irPara(int step, cliente) {
     cliente.stepAtual = step;
   }
+
+  _capturarRG(cliente) {
+
+  }
+
 }
