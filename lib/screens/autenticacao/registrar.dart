@@ -59,20 +59,32 @@ class Registrar extends StatelessWidget {
     );
   }
 
-  // void _salvar(context) {
-  //   Provider.of<Cliente>(context).nome = _nomeController.text;
-  // }
+  _salvarStep1(context) {
+    if(_formUserData.currentState.validate()) {
 
-  _salvarStep1(contex) {
+      Cliente cliente = Provider.of<Cliente>(context);
+      cliente.nome = _nomeController.text;
 
+      _proximoStep(context);
+    }
   }
 
-  _salvarStep2(contex) {
-
+  _salvarStep2(context) {
+    if(_formUserAddress.currentState.validate()) {
+      _proximoStep(context);
+    }
   }
 
-  _salvarStep3(contex) {
+  _salvarStep3(context) {
+    if(_formUserAuth.currentState.validate()) {
+      FocusScope.of(context).unfocus();
 
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+          (route) => false
+      );
+    }
   }
 
   List<Step> _construirSteps(context, cliente) {
