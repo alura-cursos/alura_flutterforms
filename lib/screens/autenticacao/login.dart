@@ -4,6 +4,7 @@ import 'package:bytebank/screens/autenticacao/registrar.dart';
 import 'package:bytebank/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flux_validator_dart/flux_validator_dart.dart';
 
 class Login extends StatelessWidget {
 
@@ -80,15 +81,7 @@ class Login extends StatelessWidget {
               FilteringTextInputFormatter.digitsOnly,
               CpfInputFormatter(),
             ],
-            validator: (value) {
-              if(value.length == 0)
-                return 'Informe o CPF!';
-
-              if(value.length < 14)
-                return 'CPF inválido!';
-
-              return null;
-            },
+            validator: (value) => Validator.cpf(value) ? 'CPF inválido' : null,
             keyboardType: TextInputType.number,
             controller: _cpfController,
           ),
@@ -127,7 +120,7 @@ class Login extends StatelessWidget {
               onPressed: () {
                 if(_formkey.currentState.validate()) {
 
-                  if(_cpfController.text == '111.111.111-11' && _senhaController.text == 'abc123') {
+                  if(_cpfController.text == '267.168.570-01' && _senhaController.text == 'abc123') {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(

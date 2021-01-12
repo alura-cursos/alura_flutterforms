@@ -5,6 +5,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:flux_validator_dart/flux_validator_dart.dart';
 
 class Registrar extends StatelessWidget {
 
@@ -151,16 +152,7 @@ class Registrar extends StatelessWidget {
                 controller: _emailController,
                 maxLength: 255,
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-
-                  if(!value.contains("@") || !value.contains('.'))
-                    return 'Email inválido!';
-
-                  if(value.length < 3)
-                    return 'Email muito curto!';
-
-                  return null;
-                },
+                validator: (value) => Validator.email(value) ? 'Email inválido' : null,
               ),
 
               TextFormField(
@@ -170,13 +162,7 @@ class Registrar extends StatelessWidget {
                 controller: _cpfController,
                 maxLength: 14,
                 keyboardType: TextInputType.number,
-                validator: (value) {
-
-                  if(value.length != 14)
-                    return 'CPF inválido';
-
-                  return null;
-                },
+                validator: (value) => Validator.cpf(value) ? 'CPF inválido' : null,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CpfInputFormatter()
@@ -190,13 +176,7 @@ class Registrar extends StatelessWidget {
                 controller: _celularController,
                 maxLength: 14,
                 keyboardType: TextInputType.number,
-                validator: (value) {
-
-                  if(value.length < 11)
-                    return 'Celular inválido';
-
-                  return null;
-                },
+                validator: (value) => Validator.phone(value) ? 'Celular inválido' : null,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   TelefoneInputFormatter()
@@ -237,13 +217,7 @@ class Registrar extends StatelessWidget {
                 controller: _cepController,
                 maxLength: 10,
                 keyboardType: TextInputType.number,
-                validator: (value) {
-
-                  if(value.length < 10)
-                    return 'CEP inválido';
-
-                  return null;
-                },
+                validator: (value) => Validator.cep(value) ? 'CEP inválido' : null,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   CepInputFormatter()

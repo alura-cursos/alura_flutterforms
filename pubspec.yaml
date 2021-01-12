@@ -26,6 +26,7 @@ dependencies:
   provider: ^3.0.0
   brasil_fields: ^0.6.0
   date_time_picker: ^1.1.0
+  flux_validator_dart: ^1.0.3
 
 dev_dependencies:
   flutter_test:
