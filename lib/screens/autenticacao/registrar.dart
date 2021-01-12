@@ -1,7 +1,10 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:bytebank/models/cliente.dart';
+import 'package:bytebank/screens/dashboard/dashboard.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Registrar extends StatelessWidget {
 
@@ -31,6 +34,7 @@ class Registrar extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
+
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Nome',
@@ -227,11 +231,45 @@ class Registrar extends StatelessWidget {
                     maxLength: 255,
                     keyboardType: TextInputType.text,
                   ),
+
+                  SizedBox(height: 25),
+                  OutlineButton(
+                    onPressed: () {
+
+                      if(_formKey.currentState.validate()) {
+                        _salvar(context);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Dashboard()
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    },
+                    highlightColor: Color.fromRGBO(71, 161, 56, 0.2),
+                    borderSide: BorderSide(
+                        width: 2,
+                        color: Theme.of(context).accentColor
+                    ),
+                    textColor: Theme.of(context).accentColor,
+                    child: Text(
+                      'Finalizar cadastro >',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
     );
+  }
+
+  void _salvar(context) {
+    Provider.of<Cliente>(context).nome = _nomeController.text;
   }
 }

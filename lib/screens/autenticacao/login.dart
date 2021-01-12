@@ -158,7 +158,6 @@ class Login extends StatelessWidget {
           ),
 
           SizedBox(height: 25),
-
           OutlineButton(
             onPressed: () {
               Navigator.push(

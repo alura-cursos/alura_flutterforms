@@ -1,9 +1,11 @@
+import 'package:bytebank/models/cliente.dart';
 import 'package:bytebank/screens/autenticacao/login.dart';
 import 'package:bytebank/screens/dashboard/saldo.dart';
 import 'package:bytebank/screens/deposito/formulario.dart';
 import 'package:bytebank/screens/extrato/ultimas.dart';
 import 'package:bytebank/screens/transferencia/formulario.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -13,6 +15,28 @@ class Dashboard extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
+
+          Consumer<Cliente>(
+              builder: (context, cliente, child) {
+                if(cliente.nome != null) {
+
+                  return Text('Olá, ${cliente.nome.split(" ")[0]}, o seu saldo de hoje é:',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15
+                      )
+                  );
+                }
+
+                return Text('Olá, o seu saldo de hoje é:',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15
+                    )
+                );
+              }
+          ),
+
           Align(
             alignment: Alignment.topCenter,
             child: SaldoCard(),

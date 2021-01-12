@@ -85,5 +85,7 @@ class Cliente extends ChangeNotifier{
 
   set nome(String value) {
     _nome = value;
+
+    notifyListeners();
   }
 }
