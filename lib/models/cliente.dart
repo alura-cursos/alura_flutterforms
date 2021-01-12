@@ -94,6 +94,15 @@ class Cliente extends ChangeNotifier{
   //  Tela de cadastro de cliente
   int _stepAtual = 0;
   File _imagemRG = null;
+  bool _biometria = false;
+
+  bool get biometria => _biometria;
+
+  set biometria(bool value) {
+    _biometria = value;
+
+    notifyListeners();
+  }
 
   File get imagemRG => _imagemRG;
 

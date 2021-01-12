@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:bytebank/components/biometria.dart';
 import 'package:bytebank/models/cliente.dart';
 import 'package:bytebank/screens/dashboard/dashboard.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -373,6 +374,8 @@ class Registrar extends StatelessWidget {
               ),
 
               _jaEnviouRG(context) ? _imagemDoRG(context) : _pedidoDeRG(context),
+
+              Biometria(),
             ],
           ),
         )

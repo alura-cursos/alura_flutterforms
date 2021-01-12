@@ -28,6 +28,7 @@ dependencies:
   date_time_picker: ^1.1.0
   flux_validator_dart: ^1.0.3
   image_picker: ^0.6.7+17
+  local_auth: ^0.6.3+4
 
 dev_dependencies:
   flutter_test:
