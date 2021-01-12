@@ -50,9 +50,38 @@ class Registrar extends StatelessWidget {
                 return functions[cliente.stepAtual](context);
               },
               onStepCancel: () {
-                cliente.stepAtual > 0 ? cliente.stepAtual -1 : 0;
+                cliente.stepAtual = cliente.stepAtual > 0 ? cliente.stepAtual -1 : 0;
               },
               steps: _construirSteps(context, cliente),
+              controlsBuilder: (context, {onStepContinue, onStepCancel}) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      RaisedButton(
+                        onPressed: onStepContinue,
+                        child: Text(
+                          'Salvar',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(right: 20)),
+                      RaisedButton(
+                        onPressed: onStepCancel,
+                        child: Text(
+                          'Voltar',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                );
+              },
             );
           },
         ),
