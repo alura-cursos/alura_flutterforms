@@ -169,6 +169,64 @@ class Registrar extends StatelessWidget {
                       return null;
                     },
                   ),
+
+                  SizedBox(height: 15),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Cidade',
+                    ),
+                    controller: _cidadeController,
+                    maxLength: 255,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+
+                      if(value.length < 3)
+                        return 'Cidade inválida';
+
+                      return null;
+                    },
+                  ),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Bairro',
+                    ),
+                    controller: _bairroController,
+                    maxLength: 255,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+
+                      if(value.length < 3)
+                        return 'Bairro inválido';
+
+                      return null;
+                    },
+                  ),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Logradouro',
+                    ),
+                    controller: _logradouroController,
+                    maxLength: 255,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+
+                      if(value.length < 3)
+                        return 'Logradouro inválido';
+
+                      return null;
+                    },
+                  ),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Número',
+                    ),
+                    controller: _numeroController,
+                    maxLength: 255,
+                    keyboardType: TextInputType.text,
+                  ),
                 ],
               ),
             ),
