@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:bytebank/components/mensagem.dart';
 import 'package:bytebank/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -119,34 +120,24 @@ class Login extends StatelessWidget {
               ),
               child: Text('CONTINUAR'),
               onPressed: () {
-
                 if(_formkey.currentState.validate()) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Dashboard(),
-                      ),
-                          (route) => false
-                  );
-                } //else {
-                //   showDialog(
-                //       context: context,
-                //       builder: (BuildContext context) {
-                //         return AlertDialog(
-                //           title: Text('ATENÇÃO'),
-                //           content: Text('CPF ou Senha incorretos!'),
-                //           actions: [
-                //             FlatButton(
-                //                 onPressed: () {
-                //                   Navigator.pop(context);
-                //                 },
-                //                 child: Text('Fechar')
-                //             ),
-                //           ],
-                //         );
-                //       }
-                //   );
-                // }
+
+                  if(_cpfController.text == '111.111.111-11' && _senhaController.text == 'abc123') {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Dashboard(),
+                        ),
+                            (route) => false
+                    );
+                  } else {
+                    exibirAlerta(
+                        context: context,
+                        titulo: 'ATENÇÃO',
+                        content: 'CPF ou Senha incorretos!'
+                    );
+                  }
+                }
               },
             ),
           ),
