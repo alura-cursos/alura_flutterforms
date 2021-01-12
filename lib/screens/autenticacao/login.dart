@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:bytebank/components/mensagem.dart';
+import 'package:bytebank/screens/autenticacao/registrar.dart';
 import 'package:bytebank/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -160,7 +161,12 @@ class Login extends StatelessWidget {
 
           OutlineButton(
             onPressed: () {
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Registrar()
+                ),
+              );
             },
             highlightColor: Color.fromRGBO(71, 161, 56, 0.2),
             borderSide: BorderSide(
