@@ -8,18 +8,27 @@ import 'package:provider/provider.dart';
 
 class Registrar extends StatelessWidget {
 
-  final _formKey = GlobalKey<FormState>();
+  // Step 1
+  final _formUserData = GlobalKey<FormState>();
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _celularController = TextEditingController();
   final TextEditingController _nascimentoController = TextEditingController();
+
+  // Step 2
+  final _formUserAddress = GlobalKey<FormState>();
   final TextEditingController _cepController = TextEditingController();
   final TextEditingController _estadoController = TextEditingController();
   final TextEditingController _cidadeController = TextEditingController();
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
   final TextEditingController _numeroController = TextEditingController();
+
+  // Step 3
+  final _formUserAuth = GlobalKey<FormState>();
+  final TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _confirmarSenhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,152 +56,6 @@ class Registrar extends StatelessWidget {
             );
           },
         ),
-        // body: SingleChildScrollView(
-        //   child: Form(
-        //     key: _formKey,
-        //     child: Padding(
-        //       padding: EdgeInsets.all(20),
-        //       child: Column(
-        //         children: [
-
-        //
-        //           SizedBox(height: 15),
-        //           TextFormField(
-        //             decoration: InputDecoration(
-        //               labelText: 'Cep',
-        //             ),
-        //             controller: _cepController,
-        //             maxLength: 10,
-        //             keyboardType: TextInputType.number,
-        //             validator: (value) {
-        //
-        //               if(value.length < 10)
-        //                 return 'CEP inválido';
-        //
-        //               return null;
-        //             },
-        //             inputFormatters: [
-        //               FilteringTextInputFormatter.digitsOnly,
-        //               CepInputFormatter()
-        //             ],
-        //           ),
-        //
-        //           DropdownButtonFormField(
-        //             isExpanded: true,
-        //             decoration: InputDecoration(
-        //               labelText: 'Estado'
-        //             ),
-        //             items: Estados.listaEstadosSigla.map((String estado) {
-        //               return DropdownMenuItem(
-        //                   child: Text(estado),
-        //                   value: estado,
-        //               );
-        //             }).toList(),
-        //             onChanged: (String novoEstadoSelecionado) {
-        //               _estadoController.text = novoEstadoSelecionado;
-        //             },
-        //
-        //             validator: (value) {
-        //
-        //               if(value == null)
-        //                 return 'Selecione um estado!';
-        //
-        //               return null;
-        //             },
-        //           ),
-        //
-        //           SizedBox(height: 15),
-        //           TextFormField(
-        //             decoration: InputDecoration(
-        //               labelText: 'Cidade',
-        //             ),
-        //             controller: _cidadeController,
-        //             maxLength: 255,
-        //             keyboardType: TextInputType.text,
-        //             validator: (value) {
-        //
-        //               if(value.length < 3)
-        //                 return 'Cidade inválida';
-        //
-        //               return null;
-        //             },
-        //           ),
-        //
-        //           TextFormField(
-        //             decoration: InputDecoration(
-        //               labelText: 'Bairro',
-        //             ),
-        //             controller: _bairroController,
-        //             maxLength: 255,
-        //             keyboardType: TextInputType.text,
-        //             validator: (value) {
-        //
-        //               if(value.length < 3)
-        //                 return 'Bairro inválido';
-        //
-        //               return null;
-        //             },
-        //           ),
-        //
-        //           TextFormField(
-        //             decoration: InputDecoration(
-        //               labelText: 'Logradouro',
-        //             ),
-        //             controller: _logradouroController,
-        //             maxLength: 255,
-        //             keyboardType: TextInputType.text,
-        //             validator: (value) {
-        //
-        //               if(value.length < 3)
-        //                 return 'Logradouro inválido';
-        //
-        //               return null;
-        //             },
-        //           ),
-        //
-        //           TextFormField(
-        //             decoration: InputDecoration(
-        //               labelText: 'Número',
-        //             ),
-        //             controller: _numeroController,
-        //             maxLength: 255,
-        //             keyboardType: TextInputType.text,
-        //           ),
-        //
-        //           SizedBox(height: 25),
-        //           OutlineButton(
-        //             onPressed: () {
-        //
-        //               if(_formKey.currentState.validate()) {
-        //                 _salvar(context);
-        //                 Navigator.pushAndRemoveUntil(
-        //                   context,
-        //                   MaterialPageRoute(
-        //                       builder: (context) => Dashboard()
-        //                   ),
-        //                   (route) => false,
-        //                 );
-        //               }
-        //             },
-        //             highlightColor: Color.fromRGBO(71, 161, 56, 0.2),
-        //             borderSide: BorderSide(
-        //                 width: 2,
-        //                 color: Theme.of(context).accentColor
-        //             ),
-        //             textColor: Theme.of(context).accentColor,
-        //             child: Text(
-        //               'Finalizar cadastro >',
-        //               style: TextStyle(
-        //                 color: Theme.of(context).accentColor,
-        //                 fontWeight: FontWeight.bold,
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
     );
   }
 
@@ -212,8 +75,273 @@ class Registrar extends StatelessWidget {
 
   }
 
-  _construirSteps(context, cliente) {
+  List<Step> _construirSteps(context, cliente) {
+    List<Step> step = [
+      Step(
+        title: Text('Seus dados'),
+        isActive: cliente.stepAtual >= 0,
+        content: Form(
+          key: _formUserData,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                ),
+                controller: _nomeController,
+                maxLength: 255,
+                keyboardType: TextInputType.text,
+                validator: (value) {
 
+                  if(value.length < 3)
+                    return 'Nome inválido!';
+
+                  if(!value.contains(" "))
+                    return 'Informe pelo menos um sobrenome!';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                ),
+                controller: _emailController,
+                maxLength: 255,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+
+                  if(!value.contains("@") || !value.contains('.'))
+                    return 'Email inválido!';
+
+                  if(value.length < 3)
+                    return 'Email muito curto!';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'CPF',
+                ),
+                controller: _cpfController,
+                maxLength: 14,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+
+                  if(value.length != 14)
+                    return 'CPF inválido';
+
+                  return null;
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CpfInputFormatter()
+                ],
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Celular',
+                ),
+                controller: _celularController,
+                maxLength: 14,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+
+                  if(value.length < 11)
+                    return 'Celular inválido';
+
+                  return null;
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  TelefoneInputFormatter()
+                ],
+              ),
+
+              DateTimePicker(
+                controller: _nascimentoController,
+                type: DateTimePickerType.date,
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                dateLabelText: 'Nascimento',
+                dateMask: 'dd/MM/yyyy',
+
+                validator: (value) {
+                  if(value.isEmpty)
+                    return 'Data inválida!';
+
+                  return null;
+                },
+              ),
+            ],
+          ),
+        )
+      ),
+
+      Step(
+        title: Text('Endereço'),
+        isActive: cliente.stepAtual >= 1,
+        content: Form(
+          key: _formUserAddress,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Cep',
+                ),
+                controller: _cepController,
+                maxLength: 10,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+
+                  if(value.length < 10)
+                    return 'CEP inválido';
+
+                  return null;
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CepInputFormatter()
+                ],
+              ),
+
+              DropdownButtonFormField(
+                isExpanded: true,
+                decoration: InputDecoration(
+                  labelText: 'Estado'
+                ),
+                items: Estados.listaEstadosSigla.map((String estado) {
+                  return DropdownMenuItem(
+                      child: Text(estado),
+                      value: estado,
+                  );
+                }).toList(),
+                onChanged: (String novoEstadoSelecionado) {
+                  _estadoController.text = novoEstadoSelecionado;
+                },
+
+                validator: (value) {
+
+                  if(value == null)
+                    return 'Selecione um estado!';
+
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 15),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Cidade',
+                ),
+                controller: _cidadeController,
+                maxLength: 255,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+
+                  if(value.length < 3)
+                    return 'Cidade inválida';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Bairro',
+                ),
+                controller: _bairroController,
+                maxLength: 255,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+
+                  if(value.length < 3)
+                    return 'Bairro inválido';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Logradouro',
+                ),
+                controller: _logradouroController,
+                maxLength: 255,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+
+                  if(value.length < 3)
+                    return 'Logradouro inválido';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Número',
+                ),
+                controller: _numeroController,
+                maxLength: 255,
+                keyboardType: TextInputType.text,
+              ),
+            ],
+          ),
+        )
+      ),
+
+      Step(
+        title: Text('Autenticação'),
+        isActive: cliente.stepAtual >= 2,
+        content: Form(
+          key: _formUserAuth,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                ),
+                controller: _senhaController,
+                maxLength: 255,
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+
+                  if(value.length < 8)
+                    return 'Senha muito curta';
+
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Confirmar',
+                ),
+                controller: _confirmarSenhaController,
+                maxLength: 255,
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                validator: (value) {
+
+                  if(value != _senhaController.text)
+                    return 'Este campo está diferente da senha informada!';
+
+                  return null;
+                },
+              ),
+            ],
+          ),
+        )
+      )
+    ];
+
+    return step;
   }
 
   _proximoStep(context) {
