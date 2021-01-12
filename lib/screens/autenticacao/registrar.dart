@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:bytebank/models/cliente.dart';
 import 'package:bytebank/screens/dashboard/dashboard.dart';
@@ -92,24 +94,25 @@ class Registrar extends StatelessWidget {
   }
 
   _salvarStep1(context) {
-    // if(_formUserData.currentState.validate()) {
+    if(_formUserData.currentState.validate()) {
 
-      // Cliente cliente = Provider.of<Cliente>(context);
-      // cliente.nome = _nomeController.text;
+      Cliente cliente = Provider.of<Cliente>(context);
+      cliente.nome = _nomeController.text;
 
       _proximoStep(context);
-    // }
+    }
   }
 
   _salvarStep2(context) {
-    // if(_formUserAddress.currentState.validate()) {
+    if(_formUserAddress.currentState.validate()) {
       _proximoStep(context);
-    // }
+    }
   }
 
   _salvarStep3(context) {
-    if(_formUserAuth.currentState.validate()) {
+    if(_formUserAuth.currentState.validate() && Provider.of<Cliente>(context).imagemRG != null) {
       FocusScope.of(context).unfocus();
+      Provider.of<Cliente>(context).imagemRG = null;
 
       Navigator.pushAndRemoveUntil(
           context,
@@ -379,17 +382,45 @@ class Registrar extends StatelessWidget {
     return step;
   }
 
-  _proximoStep(context) {
+  void _proximoStep(context) {
     Cliente cliente = Provider.of<Cliente>(context, listen: false);
     irPara(cliente.stepAtual + 1, cliente);
   }
 
-  irPara(int step, cliente) {
+  void irPara(int step, cliente) {
     cliente.stepAtual = step;
   }
 
-  _capturarRG(cliente) {
+  void _capturarRG(cliente) async {
+    final pickedImage = await _picker.getImage(source: ImageSource.camera);
+    cliente.imagemRG = File(pickedImage.path);
+  }
 
+  bool _jaEnviouRG(context) {
+    if(Provider.of<Cliente>(context).imagemRG != null)
+      return true;
+
+    return false;
+  }
+
+  Image _imagemDoRG(context) {
+    return Image.file(Provider.of<Cliente>(context).imagemRG);
+  }
+
+  Column _pedidoDeRG(context) {
+    return Column(
+      children: [
+        SizedBox(height: 15,),
+        Text(
+          'Foto do RG pendente!',
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 15
+          ),
+        ),
+      ],
+    );
   }
 
 }
