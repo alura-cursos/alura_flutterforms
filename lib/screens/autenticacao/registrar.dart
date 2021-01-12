@@ -226,7 +226,7 @@ class Registrar extends StatelessWidget {
                 validator: (value) => Validator.cep(value) ? 'CEP inválido' : null,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  CepInputFormatter()
+                  CepInputFormatter(ponto: false)
                 ],
               ),
 
