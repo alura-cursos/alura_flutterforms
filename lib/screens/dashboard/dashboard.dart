@@ -1,3 +1,4 @@
+import 'package:bytebank/screens/autenticacao/login.dart';
 import 'package:bytebank/screens/dashboard/saldo.dart';
 import 'package:bytebank/screens/deposito/formulario.dart';
 import 'package:bytebank/screens/extrato/ultimas.dart';
@@ -45,7 +46,20 @@ class Dashboard extends StatelessWidget {
               ),
             ],
           ),
-          UltimasTransferencias()
+          UltimasTransferencias(),
+          RaisedButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Login()
+                ),
+                (route) => false
+              );
+            },
+            color: Colors.green,
+            child: Text('Sair'),
+          ),
         ],
       ),
     );

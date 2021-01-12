@@ -85,6 +85,8 @@ class Login extends StatelessWidget {
 
               if(value.length < 14)
                 return 'CPF inválido!';
+
+              return null;
             },
             keyboardType: TextInputType.number,
             controller: _cpfController,
@@ -100,6 +102,8 @@ class Login extends StatelessWidget {
             validator: (value) {
               if(value.length == 0)
                 return 'Informe uma senha!';
+
+              return null;
             },
             keyboardType: TextInputType.text,
             controller: _senhaController,
