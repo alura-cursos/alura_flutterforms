@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,6 +11,12 @@ class Registrar extends StatelessWidget {
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _celularController = TextEditingController();
   final TextEditingController _nascimentoController = TextEditingController();
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _estadoController = TextEditingController();
+  final TextEditingController _cidadeController = TextEditingController();
+  final TextEditingController _bairroController = TextEditingController();
+  final TextEditingController _logradouroController = TextEditingController();
+  final TextEditingController _numeroController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +107,67 @@ class Registrar extends StatelessWidget {
                       FilteringTextInputFormatter.digitsOnly,
                       TelefoneInputFormatter()
                     ],
+                  ),
+
+                  DateTimePicker(
+                    controller: _nascimentoController,
+                    type: DateTimePickerType.date,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    dateLabelText: 'Nascimento',
+                    dateMask: 'dd/MM/yyyy',
+
+                    validator: (value) {
+                      if(value.isEmpty)
+                        return 'Data inválida!';
+
+                      return null;
+                    },
+                  ),
+
+                  SizedBox(height: 15),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Cep',
+                    ),
+                    controller: _cepController,
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+
+                      if(value.length < 10)
+                        return 'CEP inválido';
+
+                      return null;
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CepInputFormatter()
+                    ],
+                  ),
+
+                  DropdownButtonFormField(
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      labelText: 'Estado'
+                    ),
+                    items: Estados.listaEstadosSigla.map((String estado) {
+                      return DropdownMenuItem(
+                          child: Text(estado),
+                          value: estado,
+                      );
+                    }).toList(),
+                    onChanged: (String novoEstadoSelecionado) {
+                      _estadoController.text = novoEstadoSelecionado;
+                    },
+
+                    validator: (value) {
+
+                      if(value == null)
+                        return 'Selecione um estado!';
+
+                      return null;
+                    },
                   ),
                 ],
               ),
